@@ -20,6 +20,6 @@ class ResponseData(TypedDict):
     body: Optional[str]
 
 
-class Connection(TypedDict):
+class MemoryConnection(TypedDict):
     requests: Queue[RequestData]
     responses: Queue[ResponseData]
