@@ -1,7 +1,6 @@
 import asyncio
 import logging
 import os
-from asyncio import Queue
 from base64 import b64decode, b64encode
 from typing import Optional, Any
 from uuid import uuid4
@@ -13,9 +12,18 @@ from starlette.types import Scope, Receive, Send
 from starlette.websockets import WebSocket
 
 from ttun_server.proxy_queue import ProxyQueue
-from ttun_server.types import RequestData, Config, ResponseData
+from ttun_server.types import RequestData, Config
 
 logger = logging.getLogger(__name__)
+
+
+class HeaderMapping:
+    def __init__(self, headers: list[tuple[str, str]]):
+        self._headers = headers
+
+    def items(self):
+        for header in self._headers:
+            yield header
 
 
 class Proxy(HTTPEndpoint):
@@ -31,15 +39,14 @@ class Proxy(HTTPEndpoint):
             await queue.send_request(RequestData(
                 method=request.method,
                 path=str(request.url).replace(str(request.base_url), '/'),
-                headers=dict(request.headers),
-                cookies=dict(request.cookies),
+                headers=list(request.headers.items()),
                 body=b64encode(await request.body()).decode()
             ))
 
             _response = await queue.handle_response()
             response = Response(
                 status_code=_response['status'],
-                headers=_response['headers'],
+                headers=HeaderMapping(_response['headers']),
                 content=b64decode(_response['body'].encode())
             )
         except AssertionError:
