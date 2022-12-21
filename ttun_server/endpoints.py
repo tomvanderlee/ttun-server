@@ -49,7 +49,7 @@ class Proxy(HTTPEndpoint):
 
 
 class Health(HTTPEndpoint):
-    async def get(self) -> None:
+    async def get(self, _) -> None:
         response = Response(content='OK', status_code=200)
 
         await response(self.scope, self.receive, self.send)
