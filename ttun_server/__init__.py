@@ -9,11 +9,8 @@ from ttun_server.endpoints import Proxy, Tunnel, Health
 logging.basicConfig(level=getattr(logging, os.environ.get('LOG_LEVEL', 'INFO')))
 
 base_router = Router(routes=[
-    Route('/health/}', Health),
+    Route('/health/', Health),
     WebSocketRoute('/tunnel/', Tunnel)
-])
-
-proxy_router = Router(routes=[
 ])
 
 server = Starlette(
