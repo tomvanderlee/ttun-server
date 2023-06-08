@@ -3,7 +3,7 @@ import os
 from aioredis import ConnectionPool, Redis
 
 
-class RedisConnectionPool():
+class RedisConnectionPool:
     instance: 'RedisConnectionPool' = None
 
     def __init__(self):

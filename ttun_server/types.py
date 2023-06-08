@@ -10,6 +10,7 @@ class MessageType(Enum):
 
 class Config(TypedDict):
     subdomain: str
+    client_version: str
 
 
 class RequestData(TypedDict):

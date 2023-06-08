@@ -15,7 +15,10 @@ RUN pip install -r requirements.txt --root /buildroot
 FROM base
 
 COPY --from=build /buildroot /
+
 COPY . .
+ARG DOCKER_METADATA_OUTPUT_VERSION
+RUN echo "version='$DOCKER_METADATA_OUTPUT_VERSION'" > ttun_server/_version.py
 
 ENV TUNNEL_DOMAIN=
 ENV SECURE True
