@@ -1,9 +1,16 @@
 from asyncio import Queue
+from enum import Enum
 from typing import TypedDict, Optional
+
+
+class MessageType(Enum):
+    request = 'request'
+    response = 'response'
 
 
 class Config(TypedDict):
     subdomain: str
+
 
 class RequestData(TypedDict):
     method: str
@@ -18,6 +25,12 @@ class ResponseData(TypedDict):
     body: Optional[str]
 
 
+class Message(TypedDict):
+    type: MessageType
+    identifier: str
+    payload: Config | RequestData | ResponseData
+
+
 class MemoryConnection(TypedDict):
-    requests: Queue[RequestData]
-    responses: Queue[ResponseData]
+    requests: Queue[Message]
+    responses: Queue[Message]
