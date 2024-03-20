@@ -1,6 +1,8 @@
+import asyncio
 import os
+from asyncio import get_running_loop
 
-from aioredis import ConnectionPool, Redis
+from redis.asyncio import ConnectionPool, Redis
 
 
 class RedisConnectionPool:
@@ -8,9 +10,6 @@ class RedisConnectionPool:
 
     def __init__(self):
        self.pool = ConnectionPool.from_url(os.environ.get('REDIS_URL'))
-
-    def __del__(self):
-        self.pool.disconnect()
 
     @classmethod
     def get_connection(cls) -> Redis:

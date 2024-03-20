@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import traceback
 from typing import Type
 
 from ttun_server.redis import RedisConnectionPool
