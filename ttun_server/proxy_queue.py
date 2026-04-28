@@ -109,7 +109,7 @@ class RedisProxyQueue(BaseProxyQueue):
     async def enqueue(self, message: Message):
         await RedisConnectionPool \
             .get_connection() \
-            .publish(self.identifier, json.dumps(message))
+            .publish(f'request_{self.identifier}', json.dumps(message))
 
     async def dequeue(self) -> Message:
         message = await self.wait_for_message()

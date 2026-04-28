@@ -46,7 +46,7 @@ class WebsocketProxy(WebSocketEndpoint):
             else:
                 yield
         except AssertionError:
-            pass
+            yield None
 
     async def listen_for_messages(self, websocket: WebSocket):
         [subdomain, *_] = websocket.url.hostname.split('.')
@@ -74,9 +74,7 @@ class WebsocketProxy(WebSocketEndpoint):
         )
 
         async with self.proxy(websocket, message) as m:
-            type = WebsocketMessageType(m['type'])
-
-            if type == WebsocketMessageType.ack:
+            if m is not None and WebsocketMessageType(m['type']) == WebsocketMessageType.ack:
                 await super().on_connect(websocket)
 
         self.websocket_listen_task = asyncio.create_task(self.listen_for_messages(websocket))
