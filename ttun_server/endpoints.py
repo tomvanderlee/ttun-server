@@ -7,7 +7,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 from ttun_server.proxy_queue import ProxyQueue
-from ttun_server.types import HttpRequestData, Message, HttpMessageType, HttpMessage
+from ttun_server.types import HttpRequestData, HttpMessageType, HttpMessage
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ class Proxy(HTTPEndpoint):
         response = Response(content='Not Found', status_code=404)
 
         identifier = str(uuid4())
-        response_queue = await ProxyQueue.create_for_identifier(f'{subdomain}_{identifier}')
+        response_queue = await ProxyQueue.create_for_identifier(identifier)
 
         try:
 
